@@ -1,0 +1,179 @@
+Joshua Crook
+1-23-2016
+This is a basic reference on Java and coding style. This tutorial is given AS IS with NO WARANTY. The bearer is free to 
+distribute this document in any manner that he/she sees fit. The author reserves the right to change anything in this 
+document without notice. The code in this document is intended for use as an example only and should not be used in
+critical systems such as lifesaving devices, life support systems, weapons systems, etc. 
+
+/*
+*	ChangeLog:
+*	-----------------------------------------
+*	Version 1.00: 
+*	First release. Introduced proper documentation, formatting, Top Down principle, CoffeCup example. Data types section 
+*	is unfinished.
+*
+*/
+
+
+
+DOCUMENTATION:
+	This is the single most important thing you can take away from this document. Improperly documented code kills. 
+	It is worse than no code at all because you spent time and money on it and if it doesn't work, you have to 
+	rethink all of the logic to fix it and will most likely require a complete rewrite.
+	Properly commented/documented code will allow you to detect logical errors and will allow the next person 
+	that looks at it to pick up where you left off. 
+
+	It is good practice to start every file with a comment block (/*....*/) indicating what the file does, who the author is, 
+	the date that the file was created, and in most cases, a changelog indicating what has changed over the course of 
+	the program's lifetime. 
+	For example:
+	/*
+	*	Joshua Crook 1-23-2016
+	*	This is an example of a file header. 
+	*
+	*
+	*	--------------------------------------------------
+	*	Version 1.00: first release.
+	*	--------------------------------------------------
+	*	Version 1.01: fixed a typo.
+	*	--------------------------------------------------
+	*	
+	*/
+
+	All methods (unless they're REALLY simple, and even then, better safe than sorry) should have a block comment 
+	describing what the method does, the logic behind how it does it, as well as what the inputs and outputs are. 
+	@param indicates what the inputs (or arguments) are, and @return indicates the what the method outputs. 
+	These are helpful if you wish to use automated documentation software like doxygen 
+	(http://www.stack.nl/~dimitri/doxygen/) to produce a pdf document that describes your code. 
+	Classes should also have block comments to indicate what they are. 
+
+	For example:
+		/*
+		*	This method returns twice the input. 
+		*	
+		*	@param a, the number we want doubled. 
+		*	@return doubleInput, twice the input. 
+		*/
+		public int returnTwoTimesValue(int a){
+			int doubleInput=2*a;
+			return doubleInput;
+		}
+
+	Line comments (//) should be used as notes to clear up confusing parts of the code. Don't use these to explain really 
+	obvious things, as that actually makes the code hard to read. 
+
+FORMATTING: 
+	All variables, methods, and classes should be in CamelCase. ThisIsCamelCase.
+	Variables and methods always have a lowercase letter at the beginning. This is for your sake and will maintain your sanity.
+	Classes always begin with a capital letter. This is also to keepp you from going nuts.
+	Variable/method names should be descriptive. This means that the name should indicate what the variable/method does
+	as well as (at least, in most coding standards) the units of the value, i.e. speedMilesPerHour.
+	So, for example:
+		Banana banana = new Banana();
+	This makes a new variable that is a Banana object. It is called banana. If you wanted to peel this specific Banana, you would call
+	banana.peel(), referencing the Banana by its name, not its type. 
+
+TOP DOWN PROGRAMMING:
+	There is a principle in programming called Top Down Programming. This principle dictates that in order to make your code more readable,
+	It is best that the highest level methods be near the top of the program. 
+	For example:
+		// this is obviously a contrived example.
+		public int sumThreeNums(int a, int b, int c){
+			int middleStep=sum(a,b);
+			return sum(middleStep, c);
+		}
+		private int sum(int a, int b){
+			return a+b;
+		}
+	Notice how the method at the beginning calls the next one down. This will also help in debugging and keeping you sane.
+
+EXAMPLE CLASS:
+	Java is object oriented. This means that you create objects (classes) and these objects do things
+	and have characteristics. 
+	For example, I will make a  class called CoffeeCup. It has characteristics and things that it does.
+
+
+	public class CoffeeCup {
+		//this is public. Everyone in the program knows that CoffeeCups exist somewhere in the universe. 
+		//these are fields. These describe characteristics of the object. 
+
+		public boolean handle; //does it have a handle?
+		public int fluidLevel; //how full is it?
+		private static Material cupMaterial; // what material composes it? 
+		
+		// public fields denote that other classes know about these values. 
+		// private fields/methods denote that only this class knows about it. 
+		// static fields/variables/methods ARE USEFUL BUT DANGEROUS. Static means that the variable name has a 
+		// specific slot in memory alotted to it. When another class or method changes the contents of that 
+		// slot in memory, IT CHANGES THROUGHOUT THE PROGRAM. I cannot stress enough just how dangerous this is.
+
+		/*
+		*	This is a constructor. You must create an object before it can exist. This specifies how the 
+		*	computer initializes a CoffeeCup.
+		*	@param hasHandle, fluidLvl, matl, whether the cup has a handle, the starting fluid level, and the material,
+		*		   respectively. 
+		*/
+		public CoffeeCup(boolean hasHandle, int fluidLvl, Material matl){
+			handle = hasHandle;//set the field above to be the argument in the constructor.
+			fluidLevel = fluidLvl;
+			material = matl;
+		}
+
+		/*
+		* An object can have multiple constructors. All objects also have an implicit constructor that takes no arguments
+		* and initializes all fields to null values. This particular constructor overrides the implicit constructor.
+		*	@param void
+		*/
+		public CoffeeCup(){
+			handle = true; //default values if no arguments provided.
+			fluidLevel = 0;
+			Material = ceramic;
+		}
+
+		/*
+		*	Adds fluid to the CoffeeCup.
+		*	@param amountToAdd, the amount of fluid to add to the cup.
+		*	@return void. 
+		*/
+		public void addFluid(int amountToAdd){
+			fluidLevel += amountToAdd;//+= operator is the same as saying "fluidLevel = fluidLevel+amountToAdd"
+		}
+
+		/*
+		*	It is generally good practice to make "getters" and "setters" to read and write to fields. This way, you won't 
+		*	accidentally modify something that you don't mean to. You could just say "cup.handle" to check if the cup has a 
+		*	handle, but there's a chance of accidentally changing that value. 
+		*
+		*/
+		public boolean getHandle(){
+			return handle;
+		}
+		public void setHandle(boolean handleValue){
+			handle = handleValue;
+		}
+		public int getFluidLevel(){
+			return fluidLevel;
+		}
+		public void setFluidLevel(int lvl){
+			fluidLevel = lvl;
+		}
+		public Material getMaterial(){
+			return material;
+		}
+		//the material won't change. no setter. 
+	}
+
+DATA TYPES:
+	These are primitive types. They are not modifiable by the user and are embedded into the language.
+
+	boolean 	a true or false value. 
+	char		16 bit unicode. Denoted with single quotes, i.e. 'a'.
+	byte		8 bit number. 
+	short		16 bit integer. 
+	int 		32 bit integer.
+	float 		32 bit floating point decimal.
+	double 		64 bit floating point decimal.
+	void 		This object has no type. This is just a catch-all for methods that do things and don't return anything.
+
+	UNFINISHED 1-23-2016 JC
+
